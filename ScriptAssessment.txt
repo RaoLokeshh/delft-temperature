@@ -1,0 +1,33 @@
+import requests
+from bs4 import BeautifulSoup
+
+def get_temperature_in_delft():
+    url = "http://www.weerindelft.nl"
+    
+    try:
+        # Make an HTTP GET request to the website
+        response = requests.get(url)
+        
+        # Check if the request was successful (status code 200)
+        if response.status_code == 200:
+            # Parse the HTML content
+            soup = BeautifulSoup(response.text, 'html.parser')
+            
+            # Find the element containing the temperature information
+            temperature_element = soup.find("div", class_="temperatuur")
+
+            if temperature_element:
+                # Extract the temperature text
+                temperature_text = temperature_element.text.strip()
+
+                # Print the temperature rounded to degrees Celsius
+                print(f"Current temperature in Delft: {round(float(temperature_text.split()[0]))} degrees Celsius")
+            else:
+                print("Temperature information not found on the website.")
+        else:
+            print(f"Failed to retrieve data. Status Code: {response.status_code}")
+    except Exception as e:
+        print(f"An error occurred: {str(e)}")
+
+if __name__ == "__main__":
+    get_temperature_in_delft()
