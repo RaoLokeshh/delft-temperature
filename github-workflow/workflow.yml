@@ -1,1 +1,24 @@
 
+name: Docker Build and Run
+
+on:
+  push:
+    branches:
+      - main  # Change to your default branch name if different
+
+jobs:
+  build-and-run:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v2
+
+    - name: Set up Docker
+      uses: docker/setup-docker@v2
+
+    - name: Build Docker image
+      run: docker build -t delft-temperature .
+
+    - name: Run Docker container
+      run: docker run delft-temperature
